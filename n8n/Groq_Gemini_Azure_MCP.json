@@ -1,0 +1,273 @@
+{
+  "name": "Groq/Gemini/Azure_MCP",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e91ec57f-1fb0-427c-bc13-370780d58ef2",
+      "name": "When chat message received",
+      "webhookId": "0c8b4439-9eea-4f2d-9ba2-fa8e708ce06e"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant, You response each user's inquery.\nRemember the user can ask different topics, answer them one by one.\n Invoke all required tools with their concise respective parameters, do not use more than one topic in each tool-invocation. that means invoke as much as possible."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        -16
+      ],
+      "id": "cf216a0a-a937-429b-a683-1e73378294f4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gemma2-9b-it",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        224
+      ],
+      "id": "90259004-1add-46a3-9ead-be2f778076a9",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "VUWPF7BZjOlMiAmm",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
+      "typeVersion": 1,
+      "position": [
+        352,
+        224
+      ],
+      "id": "56f55b3b-dbe0-498f-a5fd-0c19db744bf5",
+      "name": "MongoDB Chat Memory",
+      "credentials": {
+        "mongoDb": {
+          "id": "nX5Q4jYFr9EjXH9A",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://0.0.0.0:8000/exchange/sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        752,
+        192
+      ],
+      "id": "a856543c-7329-4671-9a43-cd4e8fe5f7b1",
+      "name": "Exchange MCP Client"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://0.0.0.0:8000/websearch/sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        592,
+        256
+      ],
+      "id": "41d1f39b-1c0e-499c-8dcc-3b09a5039519",
+      "name": "websearch MCP Client"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "http://0.0.0.0:8000/sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        464,
+        336
+      ],
+      "id": "c5f11ef8-1251-4b05-9adf-a188823bf010",
+      "name": "Context  & Weather MCP Client"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-2",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        224,
+        304
+      ],
+      "id": "ecbef79e-904e-4f39-a91f-91c697f726b1",
+      "name": "Azure OpenAI Chat Model",
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "NyZczNXumcZc95ig",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        96,
+        288
+      ],
+      "id": "ae764b00-6ad1-4db0-9e9b-983d3d3ff839",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        144
+      ],
+      "id": "45977a8f-6dce-44a2-99c2-9ade0fc39174",
+      "name": "QASAIA Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "rB6dwYFmkkThHjIx",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "MongoDB Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Exchange MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "websearch MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Context  & Weather MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "QASAIA Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "37cc795c-b158-49e3-a77e-5c86ac8b2156",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2216cc16ce9ea6e0743b6011d70b57f2b22156ad26133e8f435b72ae142a877a"
+  },
+  "id": "7SkmbL0uopRRAWQ4",
+  "tags": []
+}
