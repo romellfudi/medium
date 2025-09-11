@@ -1,0 +1,14 @@
+# python
+*.py[cod]
+__pycache__/
+
+# macOS
+.DS_Store
+
+# windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# vscode
+.vscode/

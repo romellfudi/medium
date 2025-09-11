@@ -1,0 +1,32 @@
+db/
+blog-posts/
+__pycache__
+.env
+
+# MACOS
+.DS_Store
+
+# trip afvisor
+city_report.md
+guide_report.md
+travel_plan.md
+
+# study assistant
+study_plan.md
+quiz.md
+summary.md
+
+# job interview coach
+coaching_tips.md
+interview_questions.md
+response_feedback.md
+
+# policy analyst
+policy_analysis.md
+policy_comparison.md
+policy_summary.md
+
+# bill analyzer
+bill_analysis.md
+bill_impact.md
+bill_summary.md

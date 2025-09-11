@@ -1,0 +1,10 @@
+azure-functions
+ddgs
+fasta2a
+nest_asyncio
+pydantic-ai
+pydantic-settings
+pyyaml
+requests
+rich
+uvicorn

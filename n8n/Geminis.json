@@ -1,0 +1,625 @@
+{
+  "name": "Geminis",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b0ef5220-5b21-4828-b28a-68e5184e74fe",
+              "name": "q",
+              "value": "What is google a2a?",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        544
+      ],
+      "id": "039d526a-b12f-4da9-9217-49fe6da60c20",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        544
+      ],
+      "id": "da169af4-43eb-47ac-9027-160d3bc8d016",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        144,
+        672
+      ],
+      "id": "c0be1b3f-0354-4703-b2bc-84f66e9d38fc",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "vU8X6e7GfR0zpIbd",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.q }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        448
+      ],
+      "id": "d3776fe0-c660-4732-bbe1-d74ceeaad21e",
+      "name": "Direct Answer",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -368,
+        800
+      ],
+      "id": "01c39294-42a4-4c8b-9eba-08e2070ce036",
+      "name": "When chat message received",
+      "webhookId": "1dc921d1-9994-4a51-beca-09c71b6a9ea4"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a helpful assistant. Always use all tools"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        800
+      ],
+      "id": "bc4cf91d-c4df-4c3e-8ce6-0e5553c759cd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        992
+      ],
+      "id": "bbf2ae4d-9336-4ea4-9fcd-3ad856bf9972",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"answer\": \"\",\n\t\"insights\": [\"\", \"\", \"\"],\n\t\"references\": [\"\", \"\", \"\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        1024
+      ],
+      "id": "5c51c6c8-fa59-4d83-9155-c8e71c04cb4b",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "databaseName": "n8n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryMongoDbChat",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        1024
+      ],
+      "id": "7754c4ab-942a-42a2-8c7a-0c8fbe044720",
+      "name": "MongoDB Chat Memory",
+      "credentials": {
+        "mongoDb": {
+          "id": "nX5Q4jYFr9EjXH9A",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        112,
+        1024
+      ],
+      "id": "3e40499b-ec7f-4ead-b719-13bda02180e0",
+      "name": "SerpAPI Tool",
+      "credentials": {
+        "serpApi": {
+          "id": "vU8X6e7GfR0zpIbd",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-lite",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-lite"
+        },
+        "text": "What's in this document?, summarize in one paraphrase",
+        "documentUrls": "https://raw.githubusercontent.com/romellfudi/english/9b591b152a5f9cba4d79828437014911dc7baebe/ai/dataScience.md?token=GHSAT0AAAAAADFWGSEUDINEGHMPLLBPGZFO2FXLSZQ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        1168
+      ],
+      "id": "60f3ff95-77ac-460d-8739-f5a15bb6f0b3",
+      "name": "Analyze document",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileUrl": "https://raw.githubusercontent.com/romellfudi/english/9b591b152a5f9cba4d79828437014911dc7baebe/ai/dataScience.md?token=GHSAT0AAAAAADFWGSEUDINEGHMPLLBPGZFO2FXLSZQ"
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        1200
+      ],
+      "id": "8e1055d2-dc52-408c-9ddd-e99a44823b5d",
+      "name": "Upload a file",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "document",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-lite",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash-lite"
+        },
+        "text": "=What's in this document(type:{{ $json.mimeType }})? ",
+        "documentUrls": "={{ $json.fileUri }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        192,
+        1200
+      ],
+      "id": "d3b51855-9357-4b2b-9d93-abd3048cea62",
+      "name": "Analyze document1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "audioUrls": "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/refs/heads/master/sample.mp3",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        1360
+      ],
+      "id": "4f26d691-eb55-4662-9242-c814cc679320",
+      "name": "Analyze audio",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.0-flash-preview-image-generation",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.0-flash-preview-image-generation"
+        },
+        "prompt": "A cute funny cartoon llama in a decorated room, playing video games in his laptop",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        48,
+        1408
+      ],
+      "id": "b2f178eb-d90b-45ab-860c-e720138b8292",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "audioUrls": "https://storage.googleapis.com/kagglesdsdata/datasets/829978/1417968/harvard.wav?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=databundle-worker-v2%40kaggle-161607.iam.gserviceaccount.com%2F20250902%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20250902T193042Z&X-Goog-Expires=345600&X-Goog-SignedHeaders=host&X-Goog-Signature=8459a93a42a7809d50dcdd62fc49bf44639a1807869826dca2277c2271c921f73475d809557fb2ed18be5b56a352e4667c1b4ee90db19d914b8f06f9e6fb4c594e055100853775327781a18ee40a84cfcc417eab0730afaf0671624ec9acf9426d7768792c067877fcf5dfac02a6006ae847712db808b37e9ebdb575ebdffe6c13125458cd1fe52b296ff2e0d87d146d7bec073d9186fc126c42ca77feb1ea29d49f254729e0fad5025f0fca1c176bb1c8afd2496b4cfa4fe2039c11ec792fffd761eeb8f9ce17231701a3899040dd59999d590ff99810f58687c86d1d88f259df016620c799369f36d0e0e6b9da097f4c493953b0fd7c6fb111878b96d5a2d9",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        304,
+        1440
+      ],
+      "id": "4d01bea9-da7a-4b7e-9a35-b7aa1b174dcf",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        -384,
+        1600
+      ],
+      "id": "cd30b38a-77b9-4425-959e-6216d3ddd5e5",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        1792
+      ],
+      "id": "ff04a2f5-4346-4dde-b827-0fb72ac8c0c6",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -496,
+        1776
+      ],
+      "id": "ec5fdc23-0311-4b2f-be13-ba5961c6e312",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "formTitle": "Upload your data to test RAG",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Upload your file(s)",
+              "fieldType": "file",
+              "acceptFileTypes": ".pdf, .csv",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        1600
+      ],
+      "id": "58b3d482-8fe2-4756-9e37-4c222784c472",
+      "name": "Upload your file here",
+      "webhookId": "82848bc4-5ea2-4e5a-8bb6-3c09b94a8c5d"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "knowledge_base",
+        "toolDescription": "Use this knowledge base to answer questions from the user",
+        "memoryKey": {
+          "__rl": true,
+          "value": "vector_store_key",
+          "mode": "list",
+          "cachedResultName": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        1632
+      ],
+      "id": "18e162e7-a4a8-442c-a96f-feab970a47b7",
+      "name": "Query Data Tool"
+    },
+    {
+      "parameters": {
+        "chunkOverlap": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        1888
+      ],
+      "id": "a5ffde9f-2c00-4149-adc0-00d0b5f00d05",
+      "name": "Recursive Character Text Splitter"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Direct Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Direct Answer",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "MongoDB Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a file": {
+      "main": [
+        [
+          {
+            "node": "Analyze document1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Query Data Tool",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload your file here": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1f28299f-130a-4507-9042-955391840514",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2216cc16ce9ea6e0743b6011d70b57f2b22156ad26133e8f435b72ae142a877a"
+  },
+  "id": "pPKK4F17K0wmeozT",
+  "tags": []
+}

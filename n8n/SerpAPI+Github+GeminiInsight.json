@@ -1,0 +1,304 @@
+{
+  "name": "SerpAPI+Github+GeminiInsight",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        544,
+        224
+      ],
+      "id": "16d3694c-2476-4933-bb02-2564b74cbaf2",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "vU8X6e7GfR0zpIbd",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "416cc142-e26a-4357-9884-449ac1def3e6",
+              "name": "q",
+              "value": "retrieve useful info of romellfudi",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        0
+      ],
+      "id": "c53b7d65-dee3-420f-afaa-429d8cca762a",
+      "name": "Init"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "32a73038-6a14-4c77-aec2-2482244ae6a8",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $node[\"Init\"].json['q'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a helpful assistant who talks like Nintendo Mario Bros, always use information github and google website"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        0
+      ],
+      "id": "c43b53f6-d2e1-4913-aa30-93196bb03d17",
+      "name": "Retriever Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $node[\"Retriever Agent\"].json['output'] }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Use the user input to generate insightful paragrap"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "5550a805-1eae-46ba-9958-fa52fc35b93a",
+      "name": "Insightful Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"insights\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1152,
+        224
+      ],
+      "id": "51f480a3-bf75-4791-a8ae-645bd1443e5c",
+      "name": "Insights Structured Output"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"count_rows\": 10,\n\t\"github_markdown_table\": \"\",\n    \"serpapi_output\": \"\" \n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        224
+      ],
+      "id": "1d17b8f7-3d30-4f52-9ebe-cb09ce9c332e",
+      "name": "Tools Structured Output"
+    },
+    {
+      "parameters": {
+        "resource": "user",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Repository_Owner', ``, 'string') }}"
+        },
+        "limit": 3
+      },
+      "type": "n8n-nodes-base.githubTool",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        224
+      ],
+      "id": "4deaefaa-a7c6-48d9-9260-9102a9a4b8a7",
+      "name": "GitHub Tool",
+      "webhookId": "6a485f10-c1ea-4aaa-8c81-94913ac65fa7",
+      "credentials": {
+        "githubApi": {
+          "id": "WQ6LrIuJNO6x7HML",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-2",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        416,
+        224
+      ],
+      "id": "5121735b-b30e-48d7-83df-4863760f4004",
+      "name": "Azure OpenAI",
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "NyZczNXumcZc95ig",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        944,
+        224
+      ],
+      "id": "0f7ab7a4-8ef7-434b-b97c-4893036495f2",
+      "name": "Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nAySwidX5ovBKaf0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Retriever Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init": {
+      "main": [
+        [
+          {
+            "node": "Retriever Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Init",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retriever Agent": {
+      "main": [
+        [
+          {
+            "node": "Insightful Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insights Structured Output": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Insightful Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tools Structured Output": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Retriever Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Retriever Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Retriever Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Insightful Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6a9e4384-688e-478a-be21-bbe1ff35571d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2216cc16ce9ea6e0743b6011d70b57f2b22156ad26133e8f435b72ae142a877a"
+  },
+  "id": "Gbo2s8PGq93JKlNm",
+  "tags": []
+}
