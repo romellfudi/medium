@@ -1,6 +1,9 @@
-# medium
+![Medium Repository](banner.gif)
 
-sources for articles in medium
+# Medium Sources for articles, tutorials, and miscellaneous
+
+### by Romell Dominguez
+[![](https://raw.githubusercontent.com/romellfudi/assets/master/favicon.ico)](https://www.romellfudi.com/)
 
 ## Files and Directories
 
